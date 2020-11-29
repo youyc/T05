@@ -12,19 +12,17 @@ import static java.lang.Thread.sleep;
 
 public class T05 extends JFrame implements ActionListener {
 
-    private Mean_Mode_Median mean_mode_median = new Mean_Mode_Median();
-
-    private JLabel label_mean = new JLabel(mean_mode_median.get_mean());
-    private JLabel label_mode = new JLabel(mean_mode_median.get_mode());
-    private JLabel label_median = new JLabel(mean_mode_median.get_median());
+    private JLabel label_mean = new JLabel("Mean = ");
+    private JLabel label_mode = new JLabel("Mode = ");
+    private JLabel label_median = new JLabel("Median = ");
     private JProgressBar progressbar = new JProgressBar(0, 100);
     private JButton button_start = new JButton("Start");
 
     public T05(){
-        label_mean.setBounds(100, 30, 90, 30);
-        label_mode.setBounds(100, 60, 90, 30);
-        label_median.setBounds(100, 90, 90, 30);
-        progressbar.setBounds(70, 150, 360, 20);
+        label_mean.setBounds(100, 30, 200, 30);
+        label_mode.setBounds(100, 60, 1800, 30);
+        label_median.setBounds(100, 90, 200, 30);
+        progressbar.setBounds(70, 150, 1760, 20);
         button_start.setBounds(370, 320, 100, 30);
 
         add(label_mean);
@@ -38,7 +36,7 @@ public class T05 extends JFrame implements ActionListener {
         button_start.addActionListener(this);
 
         setTitle("T05 issue");
-        setSize(500, 400);
+        setSize(1900, 400);
         setLayout(null);
         //stop program when x is pressed
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -86,8 +84,8 @@ public class T05 extends JFrame implements ActionListener {
                         sum = sum + number;
                     }
                     mean = sum / numbers.length;
-                    System.out.printf("Mean = %.2f\n", mean);
-                    label_mean.setText(String.format("%.2f", mean));
+                    System.out.printf("Mean = %.2f\n", mean);                  
+                    label_mean.setText(String.format("MEAN = %.2f", mean));
 
                     //Mode
                     int maxCount = 0;
@@ -107,12 +105,15 @@ public class T05 extends JFrame implements ActionListener {
                         }
                     }
                     System.out.print("Mode number = ");
+                    String mode_numbers = "";
                     for(int m = 0; m< numCount.length; m++) {
                         if(numCount[m] == maxCount) {
                             System.out.print(numbers[m] + " ");
-                            label_mode.setText(String.valueOf(numbers[m]));
+                            mode_numbers = mode_numbers + "  " + numbers[m];
+                            //label_mode.setText(String.valueOf(numbers[m]));
                         }
                     }
+                    label_mode.setText(String.format("MODE = " + mode_numbers));
                     System.out.println();
 
                     //Median
@@ -125,7 +126,7 @@ public class T05 extends JFrame implements ActionListener {
                         median = (numbers[middle-1] + numbers[middle]) / 2.0;
                     }
                     System.out.printf("Median = %.2f\n", median);
-                    label_median.setText(String.format("%.2f", median));
+                    label_median.setText(String.format("MEDIAN = %.2f", median));
 
                     //Delay Period
                     sleep(3000);
