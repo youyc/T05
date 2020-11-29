@@ -1,7 +1,6 @@
 package com.yongchean;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -12,28 +11,32 @@ import static java.lang.Thread.sleep;
 
 public class T05 extends JFrame implements ActionListener {
 
-    private JLabel label_mean = new JLabel("Mean = ");
-    private JLabel label_mode = new JLabel("Mode = ");
-    private JLabel label_median = new JLabel("Median = ");
-    private JProgressBar progressbar = new JProgressBar(0, 100);
+    private JLabel label_random_number = new JLabel("Random Number = ");
+    private JLabel label_mean = new JLabel("MEAN = ");
+    private JLabel label_mode = new JLabel("MODE = ");
+    private JLabel label_median = new JLabel("MEDIAN = ");
+    private JProgressBar progressbar = new JProgressBar(0, 1000);
     private JButton button_start = new JButton("Start");
 
     public T05(){
-        label_mean.setBounds(100, 30, 200, 30);
-        label_mode.setBounds(100, 60, 1800, 30);
-        label_median.setBounds(100, 90, 200, 30);
-        progressbar.setBounds(70, 150, 1760, 20);
-        button_start.setBounds(370, 320, 100, 30);
+        label_random_number.setBounds(100, 30, 200, 30);
+        label_mean.setBounds(100, 60, 200, 30);
+        label_mode.setBounds(100, 90, 1800, 30);
+        label_median.setBounds(100, 120, 200, 30);
+        progressbar.setBounds(70, 200, 1760, 20);
+        button_start.setBounds(1750, 320, 100, 30);
 
+        add(label_random_number);
         add(label_mean);
         add(label_mode);
         add(label_median);
         add(progressbar);
         add(button_start);
 
-        //label_mean.setVisible(false);
+        progressbar.setStringPainted(true);
 
         button_start.addActionListener(this);
+
 
         setTitle("T05 issue");
         setSize(1900, 400);
@@ -44,17 +47,16 @@ public class T05 extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        T05 windows1 = new T05();
+        new T05();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //JOptionPane.showMessageDialog(this, label_mean);
-        //label_mean.setVisible(true);
         Random random = new Random();
         int[] random_numbers = new int[1000];
         ExecutorService executor_service_1 = Executors.newSingleThreadExecutor();
 
+        // generata 1000 random numbers, calculate mean,mode,median
         executor_service_1.execute(()->{
             try {
                 //generate 1000 random numbers
@@ -63,6 +65,7 @@ public class T05 extends JFrame implements ActionListener {
                     System.out.print(random_numbers[i] + ", ");
                     //array to keep new set of numbers
                     int size = i+1;
+                    progressbar.setValue(size);
                     int[] numbers = new int [size];
                     for (int a=0; a< numbers.length; a++){
                         numbers[a] = random_numbers[a];
@@ -73,6 +76,7 @@ public class T05 extends JFrame implements ActionListener {
                         else
                             System.out.print(numbers[a] + ", ");
                     }
+                    label_random_number.setText(String.format("Random Number = %d", random_numbers[i]));
                     Arrays.sort(numbers);
                     System.out.println();
 
@@ -84,7 +88,7 @@ public class T05 extends JFrame implements ActionListener {
                         sum = sum + number;
                     }
                     mean = sum / numbers.length;
-                    System.out.printf("Mean = %.2f\n", mean);                  
+                    System.out.printf("Mean = %.2f\n", mean);
                     label_mean.setText(String.format("MEAN = %.2f", mean));
 
                     //Mode
@@ -110,7 +114,6 @@ public class T05 extends JFrame implements ActionListener {
                         if(numCount[m] == maxCount) {
                             System.out.print(numbers[m] + " ");
                             mode_numbers = mode_numbers + "  " + numbers[m];
-                            //label_mode.setText(String.valueOf(numbers[m]));
                         }
                     }
                     label_mode.setText(String.format("MODE = " + mode_numbers));
@@ -129,7 +132,7 @@ public class T05 extends JFrame implements ActionListener {
                     label_median.setText(String.format("MEDIAN = %.2f", median));
 
                     //Delay Period
-                    sleep(3000);
+                    sleep(500);
                 }
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
